@@ -11,11 +11,11 @@ export function EmptyState() {
       <div>
         <h2 className="mb-2 text-[22px] font-bold tracking-[-0.015em] text-app-text">No applications yet</h2>
         <p className="mx-auto max-w-[420px] text-[13px] text-app-text-3">
-          Add your first application to start tracking your job search.
+          Add your first role to start tracking status, interviews, and AI tailoring suggestions in one place.
         </p>
       </div>
       <Button href="/applications/new" size="lg">
-        <PlusIcon size={16} /> Add Application
+        <PlusIcon size={16} /> Add your first Application
       </Button>
     </Card>
   )
