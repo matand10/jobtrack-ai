@@ -7,15 +7,17 @@ type FormFieldProps = {
   hint?: string
   id: string
   label: string
+  optional?: boolean
 }
 
-export function FormField({ children, error, hint, id, label }: FormFieldProps) {
+export function FormField({ children, error, hint, id, label, optional }: FormFieldProps) {
   const descriptionId = error || hint ? `${id}-description` : undefined
 
   return (
     <div>
-      <label className="mb-1.5 block text-[13px] font-medium text-app-text-2" htmlFor={id}>
+      <label className="mb-1.5 flex items-center gap-1.5 text-[13px] font-medium text-app-text-2" htmlFor={id}>
         {label}
+        {optional && <span className="font-normal text-app-text-4">· optional</span>}
       </label>
       {children}
       {error ? (
