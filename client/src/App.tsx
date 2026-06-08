@@ -23,10 +23,6 @@ function App() {
         }
       />
       <Route path="/dashboard" element={<DashboardPage />} />
-      <Route
-        path="/applications"
-        element={<PlaceholderPage title="Applications" />}
-      />
       <Route path="/applications" element={<ApplicationsPage />} />
       <Route path="/applications/new" element={<AddApplicationPage />} />
       <Route path="/applications/:id/edit" element={<EditApplicationPage />} />

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { Button } from '../components/ui/atoms/Button'
 import { PlusIcon } from '../components/ui/icons'
@@ -7,12 +8,29 @@ import { useApplications, useDeleteApplication } from '../hooks/application.hook
 import { useMe } from '../hooks/auth.hooks'
 import type { ApplicationStatus, ListApplicationsParams } from '../types/application.types'
 
+const SEARCH_DEBOUNCE_MS = 300
+
 export function ApplicationsPage() {
+  const navigate = useNavigate()
   const [params, setParams] = useState<ListApplicationsParams>({
     sort: 'newest',
     page: 1,
     limit: 20,
   })
+  const [searchInput, setSearchInput] = useState('')
+
+  // Debounce search input → params.search
+  useEffect(() => {
+    const trimmed = searchInput.trim()
+    const handle = window.setTimeout(() => {
+      setParams((prev) => {
+        const next = trimmed === '' ? undefined : trimmed
+        if (prev.search === next) return prev
+        return { ...prev, search: next, page: 1 }
+      })
+    }, SEARCH_DEBOUNCE_MS)
+    return () => window.clearTimeout(handle)
+  }, [searchInput])
 
   const meQuery = useMe()
   const query = useApplications(params)
@@ -30,6 +48,20 @@ export function ApplicationsPage() {
 
   function handlePageChange(page: number) {
     setParams((prev) => ({ ...prev, page }))
+  }
+
+  function handleClearFilters() {
+    setSearchInput('')
+    setParams((prev) => ({
+      ...prev,
+      status: undefined,
+      search: undefined,
+      page: 1,
+    }))
+  }
+
+  function handleEdit(id: string) {
+    navigate(`/applications/${id}/edit`)
   }
 
   function handleDelete(id: string) {
@@ -53,9 +85,13 @@ export function ApplicationsPage() {
         data={query.data}
         isLoading={query.isLoading}
         params={params}
+        searchInput={searchInput}
+        onSearchInput={setSearchInput}
         onTabChange={handleTabChange}
         onSortChange={handleSortChange}
         onPageChange={handlePageChange}
+        onClearFilters={handleClearFilters}
+        onEdit={handleEdit}
         onDelete={handleDelete}
         isDeleting={deleteMutation.isPending}
       />

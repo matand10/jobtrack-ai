@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { applicationStatusSchema } from '@jobtrack/shared'
+import type { ApplicationStatus } from '@jobtrack/shared'
 
 // Client-side form schema. All optional string fields accept empty string
 // so controlled inputs stay uncontrolled-free. Empty strings are stripped
@@ -17,4 +18,6 @@ export const applicationFormSchema = z.object({
   notes: z.string(),
 })
 
-export type ApplicationFormValues = z.infer<typeof applicationFormSchema>
+export type ApplicationFormValues = z.infer<typeof applicationFormSchema> & {
+  status: ApplicationStatus
+}
