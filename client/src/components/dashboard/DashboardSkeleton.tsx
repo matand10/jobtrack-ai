@@ -15,12 +15,12 @@ export function DashboardSkeleton() {
           <SkeletonBlock className="h-10 w-36" />
         </div>
       </div>
-      <div className="mb-7 grid grid-cols-2 gap-3.5 min-[700px]:grid-cols-3 min-[1100px]:grid-cols-6">
+      <div className="mb-7 grid grid-cols-2 gap-3.5 sm:grid-cols-3 lg:grid-cols-6">
         {Array.from({ length: 6 }).map((_, index) => (
           <SkeletonBlock className="h-[106px] rounded-[14px]" key={index} />
         ))}
       </div>
-      <div className="grid gap-5 min-[1100px]:grid-cols-[1.6fr_1fr]">
+      <div className="grid gap-5 lg:grid-cols-[1.6fr_1fr]">
         <SkeletonBlock className="h-[360px] rounded-[14px]" />
         <div className="flex flex-col gap-5">
           <SkeletonBlock className="h-[220px] rounded-[14px]" />

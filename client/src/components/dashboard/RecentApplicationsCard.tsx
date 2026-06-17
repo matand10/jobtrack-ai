@@ -56,9 +56,11 @@ function RecentRow({ app }: { app: Application }) {
         <p className="truncate text-[12px] text-app-text-3">{sub}</p>
       </div>
 
-      <StatusBadge status={app.status} />
+      <span className="shrink-0">
+        <StatusBadge status={app.status} />
+      </span>
 
-      <span className="inline-flex shrink-0 items-center gap-1 text-[12px] text-app-text-3">
+      <span className="hidden shrink-0 items-center gap-1 text-[12px] text-app-text-3 min-[400px]:inline-flex">
         <ClockIcon size={12} /> {formatRelativeTime(app.updatedAt)}
       </span>
 

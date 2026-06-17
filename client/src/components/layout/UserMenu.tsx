@@ -103,7 +103,7 @@ export function UserMenu({ user }: UserMenuProps) {
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           align="end"
-          className="z-[100] w-[252px] origin-top-right overflow-hidden rounded-xl border border-app-border bg-app-card shadow-card-lg data-[state=open]:animate-in data-[state=closed]:animate-out"
+          className="z-[100] w-[252px] max-w-[calc(100vw-16px)] origin-top-right overflow-hidden rounded-xl border border-app-border bg-app-card shadow-card-lg data-[state=open]:animate-in data-[state=closed]:animate-out"
           sideOffset={8}
         >
           <div className="flex items-center gap-2.5 border-b border-app-border p-3.5" role="presentation">

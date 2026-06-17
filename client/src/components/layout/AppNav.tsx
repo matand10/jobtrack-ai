@@ -10,7 +10,7 @@ type AppNavProps = {
   }
 }
 
-const navItems = [
+export const navItems = [
   { icon: ChartIcon, label: 'Dashboard', route: '/dashboard' },
   { icon: BriefcaseIcon, label: 'Applications', route: '/applications' },
   { icon: PlusIcon, label: 'Add Application', route: '/applications/new' },

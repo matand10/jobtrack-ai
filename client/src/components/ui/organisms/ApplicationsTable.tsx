@@ -80,6 +80,78 @@ function SkeletonRow() {
   )
 }
 
+function SkeletonCard() {
+  return (
+    <div className="flex flex-col gap-3 border-b border-app-border px-4 py-4 last:border-b-0">
+      <div className="flex items-start gap-3">
+        <div className="size-[38px] shrink-0 animate-pulse rounded-lg bg-app-subtle" />
+        <div className="min-w-0 flex-1">
+          <div className="mb-1.5 h-3.5 w-36 animate-pulse rounded bg-app-subtle" />
+          <div className="h-3 w-24 animate-pulse rounded bg-app-subtle" />
+        </div>
+        <div className="h-5 w-20 animate-pulse rounded-full bg-app-subtle" />
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="h-3 w-32 animate-pulse rounded bg-app-subtle" />
+        <div className="flex gap-1">
+          <div className="size-7 animate-pulse rounded-lg bg-app-subtle" />
+          <div className="size-7 animate-pulse rounded-lg bg-app-subtle" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ApplicationCard({ app, onEdit, onDelete, isDeleting }: RowProps) {
+  const locationPart = app.location ? ` · ${app.location}` : ''
+  return (
+    <div className="flex flex-col gap-3 border-b border-app-border px-4 py-4 last:border-b-0">
+      <div className="flex items-start gap-3">
+        <CompanyAvatar company={app.company} size={38} />
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[14px] font-semibold text-app-text">{app.role}</p>
+          <p className="truncate text-[12.5px] text-app-text-3">
+            {app.company}{locationPart}
+          </p>
+        </div>
+        <span className="shrink-0">
+          <StatusBadge status={app.status} />
+        </span>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex min-w-0 items-center gap-3 text-[12px] text-app-text-3">
+          {app.status !== 'SAVED' && (
+            <span className="shrink-0">Applied {formatDate(app.createdAt)}</span>
+          )}
+          <span className="inline-flex shrink-0 items-center gap-1">
+            <ClockIcon size={12} />
+            {formatRelativeTime(app.updatedAt)}
+          </span>
+        </div>
+        <div className="flex shrink-0 items-center gap-1">
+          <button
+            type="button"
+            onClick={() => onEdit(app.id)}
+            aria-label={`Edit ${app.company} – ${app.role}`}
+            className={ACTION_BTN}
+          >
+            <PencilIcon size={14} />
+          </button>
+          <button
+            type="button"
+            onClick={() => onDelete(app.id)}
+            disabled={isDeleting}
+            aria-label={`Delete ${app.company} – ${app.role}`}
+            className={ACTION_BTN_DANGER}
+          >
+            <TrashIcon size={14} />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 type RowProps = {
   app: Application
   onEdit: (id: string) => void
@@ -235,8 +307,33 @@ export function ApplicationsTable({
         </div>
       </div>
 
-      {/* ── Table ─────────────────────────────────────────────────────── */}
-      <div className="overflow-x-auto">
+      {/* ── Mobile card list (< sm) ───────────────────────────────────── */}
+      <div className="sm:hidden">
+        {isLoading ? (
+          Array.from({ length: 5 }).map((_, i) => <SkeletonCard key={i} />)
+        ) : applications.length === 0 ? (
+          <div className="px-4 py-16">
+            {hasFilters ? (
+              <FilteredEmpty onClearFilters={onClearFilters} />
+            ) : (
+              <UnfilteredEmpty />
+            )}
+          </div>
+        ) : (
+          applications.map((app) => (
+            <ApplicationCard
+              key={app.id}
+              app={app}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              isDeleting={isDeleting}
+            />
+          ))
+        )}
+      </div>
+
+      {/* ── Desktop table (≥ sm) ──────────────────────────────────────── */}
+      <div className="hidden overflow-x-auto sm:block">
         <table className="w-full border-collapse">
           <thead>
             <tr className="border-b border-app-border bg-app-subtle/40">
